@@ -2,32 +2,45 @@ const taskForm = document.getElementById("task-form");
 const taskInput = document.getElementById("task-input");
 const taskList = document.getElementById("task-list");
 
-const tasks = ["tache par defaut"];
+const tasks = ["tache par defaut", "tache 2"];
 
 let username = "Hamza";
 
 let taskCount = 0;
 let isTaskListActive = true;
 
-taskList.innerHTML = "";
+const afficher_tasks = () => {
+  taskList.innerHTML = "";
 
-//si j'ai au moins une tache dans mon tableau
-if (tasks.length > 0) {
-  //je parcours l'ensemble des taches de mon tableau
-  tasks.forEach((task, index) => {
-    //pour chaque tache de mon tableau, je créer un element
-    const taskDiv = document.createElement("div");
-    taskDiv.className = "task-item";
-    taskDiv.textContent = task;
+  //si j'ai au moins une tache dans mon tableau
+  if (tasks.length > 0) {
+    //je parcours l'ensemble des taches de mon tableau
+    tasks.forEach((task, index) => {
+      //pour chaque tache de mon tableau, je créer un element
+      const taskDiv = document.createElement("div");
+      taskDiv.className = "task-item";
+      taskDiv.textContent = task;
 
-    //une fois l'élément remplie avec les infos de la taches, je l'ajoute au container de taches.
-    taskList.appendChild(taskDiv);
-  });
-} else {
-  //sinon j'indque qu'il n'y a pas de tache
-  taskList.innerHTML = "Aucune tache pour le moment";
-}
+      const deleteBtn = document.createElement("button");
+      deleteBtn.className = "task-delete";
+      deleteBtn.textContent = "Supprimer";
 
-console.log(taskForm);
-console.log(taskInput);
-console.log(taskList);
+      deleteBtn.addEventListener("click", () => supprimer_task(index));
+
+      taskDiv.appendChild(deleteBtn);
+
+      //une fois l'élément remplie avec les infos de la taches, je l'ajoute au container de taches.
+      taskList.appendChild(taskDiv);
+    });
+  } else {
+    //sinon j'indque qu'il n'y a pas de tache
+    taskList.innerHTML = "Aucune tache pour le moment";
+  }
+};
+
+const supprimer_task = (index) => {
+  tasks.splice(index, 1);
+  afficher_tasks();
+};
+
+afficher_tasks();
