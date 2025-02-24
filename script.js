@@ -39,32 +39,36 @@ const afficher_tasks = () => {
 };
 
 const supprimer_task = (index) => {
-  if (typeof index !== "number" || index < 0 || index >= tasks.length) {
-    throw new Error("Index invalide");
+  try {
+    if (typeof index !== "number" || index < 0 || index >= tasks.length) {
+      throw new Error("Index invalide");
+    }
+    tasks.splice(index, 1);
+    afficher_tasks();
+  } catch (error) {
+    console.error(error);
   }
-  tasks.splice(index, 1);
-  afficher_tasks();
 };
 
 function ajouter_task(event) {
-  event.preventDefault();
+  try {
+    event.preventDefault();
 
-  const nouvelleTask = taskInput.value.trim();
+    const nouvelleTask = taskInput.value.trim();
 
-  if (!nouvelleTask) {
-    throw new Error("La tache ne peut pas etre vide");
+    if (!nouvelleTask) {
+      throw new Error("La tache ne peut pas etre vide");
+    }
+
+    tasks.push(nouvelleTask);
+
+    afficher_tasks();
+
+    taskInput.value = "";
+  } catch (error) {
+    console.error(error);
   }
-
-  tasks.push(nouvelleTask);
-
-  afficher_tasks();
-
-  taskInput.value = "";
 }
 
-try {
-  taskForm.addEventListener("submit", ajouter_task);
-  afficher_tasks();
-} catch (error) {
-  console.error(error);
-}
+taskForm.addEventListener("submit", ajouter_task);
+afficher_tasks();
